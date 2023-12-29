@@ -27,6 +27,14 @@ class CreateUserCreateMixinView(mixins.CreateModelMixin, generics.GenericAPIView
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    """
+        Can also perform the password hashing over here by writing this method
+
+        def perform_create(self, serializer):
+            password = make_password(serializer.validated_data.get('password'))
+            serializer.save(password=password)
+    """
+
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
