@@ -17,6 +17,20 @@ class CreateUserView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CreateUserMixinView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+# Can also be rewritten as:
+class CreateUserCreateMixinView(mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
 class GetAllUsersView(APIView):
     def get(self, request, format=None):
         users = User.objects.all()
